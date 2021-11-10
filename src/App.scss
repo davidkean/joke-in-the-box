@@ -1,0 +1,25 @@
+.joke-app {
+   &__header {
+      position: fixed;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 6rem;
+      width: 100%;
+      padding: 0 4rem;
+      font-size: 1.5rem;
+      color: #ffffff;
+      background-color: #d73d6c;
+      box-shadow: 0px 0px 1rem rgba(0, 0, 0, 0.5);
+      box-sizing: border-box;
+      z-index: 5;
+
+      .title--small {
+         font-size: 1.2rem;
+      }
+   }
+   &__content {
+      margin: 10rem auto 0 auto;
+   }
+}
