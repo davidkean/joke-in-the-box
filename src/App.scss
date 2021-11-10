@@ -30,6 +30,9 @@
       }
    }
    &__content {
-      margin: 10rem auto 0 auto;
+      ul {
+         list-style-type: none;
+         margin: 10rem auto 0 auto;
+      }
    }
 }

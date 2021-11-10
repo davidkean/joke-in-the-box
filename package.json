@@ -17,10 +17,11 @@
       "@types/react-dom": "^16.9.14",
       "@types/react-redux": "^7.1.20",
       "node-sass": "^6.0.1",
-      "react": "^17.0.2",
-      "react-dom": "^17.0.2",
+      "react": "^16.0.0",
+      "react-dom": "^16.0.0",
       "react-redux": "^7.2.6",
       "react-scripts": "4.0.3",
+      "react-stonecutter": "^0.3.10",
       "typescript": "~4.1.5"
    },
    "scripts": {
@@ -43,5 +44,8 @@
          "last 1 firefox version",
          "last 1 safari version"
       ]
+   },
+   "devDependencies": {
+      "@types/react-stonecutter": "^0.3.1"
    }
 }

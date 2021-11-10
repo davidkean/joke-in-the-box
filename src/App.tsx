@@ -1,19 +1,23 @@
 import "./App.scss";
 import React, { useEffect, useState } from "react";
+import { makeResponsive, SpringGrid } from "react-stonecutter";
 import { useGetJokesQuery } from "./api/jokes/jokes.api";
 import { IJoke } from "./global/interfaces";
 import { Joke, Toggle } from "./components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
+const Grid = makeResponsive(SpringGrid, { maxWidth: 4000 });
+
 const App: React.FC = () => {
-   const { data: jokesApiResponse = [] } = useGetJokesQuery("20");
+   const NUM_OF_JOKES = 20;
+   const { data: jokesApiResponse = [] } = useGetJokesQuery(NUM_OF_JOKES);
 
    const [jokes, setJokes] = useState<IJoke[]>([]);
    const [isShowingLikedJokes, setIsShowingLikedJokes] =
       useState<boolean>(false);
 
-   const jokeList = isShowingLikedJokes
+   const jokeList: IJoke[] = isShowingLikedJokes
       ? jokes.filter((joke: IJoke) => joke.isLiked)
       : jokes;
 
@@ -24,7 +28,7 @@ const App: React.FC = () => {
    }, [jokesApiResponse]);
 
    const toggleLiked = (jokeId: number) => {
-      const updatedJokes = jokes.map((joke: IJoke) => {
+      const updatedJokes: IJoke[] = jokes.map((joke: IJoke) => {
          return jokeId === joke.id ? { ...joke, isLiked: !joke.isLiked } : joke;
       });
       setJokes(updatedJokes);
@@ -46,16 +50,26 @@ const App: React.FC = () => {
             </div>
          </header>
          <section className="joke-app__content">
-            {jokeList.map((joke: IJoke) => {
-               return (
-                  <Joke
-                     key={joke.id}
-                     joke={joke}
-                     isLiked={joke.isLiked}
-                     onLikeBtnClick={() => toggleLiked(joke.id)}
-                  />
-               );
-            })}
+            <Grid
+               component="ul"
+               columns={10}
+               columnWidth={300}
+               gutterWidth={40}
+               gutterHeight={190}
+               springConfig={{ stiffness: 170, damping: 26 }}
+            >
+               {jokeList.map((joke: IJoke) => {
+                  return (
+                     <li key={joke.id}>
+                        <Joke
+                           joke={joke}
+                           isLiked={joke.isLiked}
+                           onLikeBtnClick={() => toggleLiked(joke.id)}
+                        />
+                     </li>
+                  );
+               })}
+            </Grid>
          </section>
       </section>
    );

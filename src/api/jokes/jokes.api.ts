@@ -7,7 +7,7 @@ export const jokesApi = createApi({
       baseUrl: "/",
    }),
    endpoints: (builder) => ({
-      getJokes: builder.query<IJoke[], string>({
+      getJokes: builder.query<IJoke[], number>({
          query: (numberOfJokes) => `${numberOfJokes}`,
          transformResponse: (response: IJoke[]) =>
             response.map((joke: IJoke) => ({ ...joke, isLiked: false })),
