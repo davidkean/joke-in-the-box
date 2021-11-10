@@ -2,12 +2,20 @@ import "./App.scss";
 import React, { useEffect, useState } from "react";
 import { useGetJokesQuery } from "./api/jokes/jokes.api";
 import { IJoke } from "./global/interfaces";
-import { Joke } from "./components";
+import { Joke, Toggle } from "./components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 const App: React.FC = () => {
    const { data: jokesApiResponse = [] } = useGetJokesQuery("20");
 
    const [jokes, setJokes] = useState<IJoke[]>([]);
+   const [isShowingLikedJokes, setIsShowingLikedJokes] =
+      useState<boolean>(false);
+
+   const jokeList = isShowingLikedJokes
+      ? jokes.filter((joke: IJoke) => joke.isLiked)
+      : jokes;
 
    useEffect(() => {
       if (jokesApiResponse) {
@@ -16,7 +24,10 @@ const App: React.FC = () => {
    }, [jokesApiResponse]);
 
    const toggleLiked = (jokeId: number) => {
-      console.log("this will be something soon");
+      const updatedJokes = jokes.map((joke: IJoke) => {
+         return jokeId === joke.id ? { ...joke, isLiked: !joke.isLiked } : joke;
+      });
+      setJokes(updatedJokes);
    };
 
    return (
@@ -25,11 +36,20 @@ const App: React.FC = () => {
             <h1 className="title">
                JOKE<span className="title--small">INTHE</span>BOX
             </h1>
+
+            <div className="show-liked">
+               <FontAwesomeIcon icon={faThumbsUp} className="like-icon" />
+               <Toggle
+                  isChecked={isShowingLikedJokes}
+                  onToggle={() => setIsShowingLikedJokes(!isShowingLikedJokes)}
+               />
+            </div>
          </header>
          <section className="joke-app__content">
-            {jokes.map((joke: IJoke) => {
+            {jokeList.map((joke: IJoke) => {
                return (
                   <Joke
+                     key={joke.id}
                      joke={joke}
                      isLiked={joke.isLiked}
                      onLikeBtnClick={() => toggleLiked(joke.id)}
